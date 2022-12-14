@@ -31,6 +31,14 @@ for(let i = 0; i < boxes.length; i++) {
 
             if(player1 == player2) {
                 player1++;
+
+                if(secondPlayer == 'ai-player') {
+                    // função executar a jogada
+
+                    computerPlay();
+
+                    player2++;
+                }
             } else {
                 player2++;
             }
@@ -43,6 +51,25 @@ for(let i = 0; i < boxes.length; i++) {
 
     });
 
+}
+
+// verificar se é 2 players ou IA
+
+for(let i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener("click", function() {
+
+        secondPlayer = this.getAttribute("id");
+
+        for(let j = 0; j < buttons.length; j++) {
+            buttons[j].style.display = "none";
+        }
+
+        setTimeout(function() {
+            let container = document.querySelector("#container");
+            container.classList.remove("hide");
+        })
+
+    });
 }
 
 // ver quem vai jogar
@@ -144,6 +171,7 @@ function declareWinner(winner) {
     } else if(winner == 'o') {
         scoreboardY.textContent = parseInt(scoreboardY.textContent) + 1;
         msg = "O jogador 2 venceu";
+        
     } else {
         msg = "Deu velha!";
     }
@@ -172,4 +200,43 @@ function declareWinner(winner) {
         boxesToRemove[i].parentNode.removeChild(boxesToRemove[i]);
     }
     
+}
+
+// executar a IA
+
+function computerPlay() {
+
+    let cloneO = o.cloneNode(true);
+    counter = 0;
+    filled = 0;
+
+    for(let i = 0; i < boxes.length; i++) {
+
+        let randomNumber = Math.floor(Math.random() * 5);
+
+        // só preencher se estiver vazio o filho
+
+        if(boxes[i].childNodes[0] == undefined) {
+
+            if(randomNumber <= 1) {
+
+                boxes[i].appendChild(cloneO);
+                counter++;
+                break;
+
+            }
+
+        // checagem de quantas estão preenchidas    
+
+        } else {
+
+            filled++;
+
+        }
+
+    }
+
+    if(counter == 0 && filled < 9) {
+        computerPlay();
+    }
 }
