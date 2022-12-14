@@ -73,9 +73,10 @@ function checkWin(b1, b2, b3) {
 
         if(b1Child == 'x' && b2Child == 'x' && b3Child == 'x') {
             // x
-            console.log('x venceu');
+            declareWinner("x");
         } else if(b1Child == 'o' && b2Child == 'o' && b3Child == 'o') {
-            console.log('o venceu');
+            // o
+            declareWinner("o");
         }
 
     }
@@ -124,7 +125,51 @@ function checkWinCondition() {
     }
 
     if(counter == 9) {
-        console.log('deu velha');
+        declareWinner("deu velha");
     }
 
+}
+
+// limpa o jogo, declara o vencedor e atualiza o placar
+
+function declareWinner(winner) {
+
+    let scoreboardX = document.querySelector("#scoreboard-1");
+    let scoreboardY = document.querySelector("#scoreboard-2");
+    let msg = "";
+
+    if(winner == 'x') {
+        scoreboardX.textContent = parseInt(scoreboardX.textContent) + 1;
+        msg = "O jogador 1 venceu!";
+    } else if(winner == 'o') {
+        scoreboardY.textContent = parseInt(scoreboardY.textContent) + 1;
+        msg = "O jogador 2 venceu";
+    } else {
+        msg = "Deu velha!";
+    }
+
+    // exibe msg
+
+    messageText.innerHTML = msg;
+    messageContainer.classList.remove("hide");
+
+    // esconde msg
+
+    setTimeout(function() {
+        messageContainer.classList.add("hide");
+    }, 3000);
+
+    // zerar jogadas
+
+    player1 = 0;
+    player2 = 0;
+
+    // zerar jogo
+
+    let boxesToRemove = document.querySelectorAll('.box div');
+
+    for(let i = 0; i < boxesToRemove.length; i++) {
+        boxesToRemove[i].parentNode.removeChild(boxesToRemove[i]);
+    }
+    
 }
